@@ -14,4 +14,10 @@ export default client => {
     })
         .filter(dir => dir.isDirectory())
         .map(dir => dir.name);
+
+    for (const folder of folders) {
+        const commandFiles = join("src", "commands", "slash", folder).filter(
+            file => file.endsWith(".ts")
+        );
+    }
 };
