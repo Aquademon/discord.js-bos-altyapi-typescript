@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { readdirSync } from "node:fs";
 import { bold, yellow } from "colors";
 
 // Belirli intent'ler ve partial'lar ile yeni bir client örneği oluştur
