@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import { bold, yellow } from "colors";
 
 // Belirli intent'ler ve partial'lar ile yeni bir client örneği oluştur
@@ -49,3 +50,10 @@ client.aliases = new Collection();
 
 // Botu .env dosyasındaki token ile giriş yap
 client.login(process.env.TOKEN);
+
+export default client;
+
+readdirSync(join(__dirname, "Handlers")).map(handler => {
+    const func = await import(join(__dirname, "Handlers", handler));
+    func.default(client);
+});
