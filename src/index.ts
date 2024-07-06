@@ -16,7 +16,7 @@ const client = new Client({
     ]
 });
 
-// ===== Çökme Koruyucusu ===== //
+// ==== Çökme Koruyucusu // ==== //
 process.on("unhandledRejection", async (reason, promise) => {
     console.error(`[ÇÖKME-KORUYUCU/unhandledRejection]: ${reason} ${promise}`);
 });
@@ -26,6 +26,14 @@ process.on("uncaughtException", async err => {
 process.on("uncaughtExceptionMonitor", async (err, origin) => {
     console.log(`[ÇÖKME-KORUYUCU/uncaughtExceptionMonitor]: ${err} ${origin}`);
 });
+
+// ==== // İstemci Özellikleri // ====//
+// @ts-ignore
+client.commands = new Collection()
+// @ts-ignore
+client.slashCommands = new Collection()
+// @ts-ignore
+client.aliases = new Collection()
 
 // Botu .env dosyasındaki token ile giriş yap
 client.login(process.env.DISCORD_TOKEN);
