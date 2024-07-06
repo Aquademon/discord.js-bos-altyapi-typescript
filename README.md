@@ -45,24 +45,104 @@ Bu proje, TypeScript kullanarak Discord.js ile gelişmiş bir Discord botu oluş
 
 3. `.env` dosyasını oluşturun ve gerekli bilgileri doldurun:
     ```env
-    DISCORD_TOKEN=bot_tokeni_buraya
-    PREFIX=!
+    TOKEN="Discord Bot TOKEN"
     ```
 
 ## Yapılandırma
 
 ### .env Dosyası
 
-`DISCORD_TOKEN`: Discord Developer Portal'dan aldığınız bot tokenı.
+`TOKEN`: Discord Developer Portal'dan aldığınız bot tokenı.
 
-`PREFIX`: Bot komutları için kullanılacak ön ek.
+### config.ts Dosyası
 
-### Komutlar
+- PREFIX: Prefix'li komutların çalışması için genel bir değişken. Örnek bir şema:
+```ts
+export default {
+    PREFIX: "!"
+};
+```
 
-`/src/commands/prefix` klasöründe komut dosyalarınızı oluşturabilirsiniz. Örnek bir komut dosyası `ping.ts`:
+- MESSAGES: Prefix için genel message değişkenleri. Örnek bir şema:
+```ts
+export default {
+    MESSAGES: {
+        COOLDOWN_MESSAGE: ["5S"]
+    }
+};
+```
+
+- COLORS: Genel renk değişkenleridir. Örnek bir şema:
+```ts
+export default {
+    COLORS: {
+        PURPLE: "#9269ff",
+        RED: "#ff0000"
+    }
+};
+```
+
+- EMOJIS: Genel emoki değişkenleri. Örnek bir şema:
+```ts
+export default {
+    EMOJIS: {
+        SUCCESS: "✅",
+        ERROR: "❌"
+    }
+};
+```
+
+- OWNERS: Bot sahiplerini "ID" girerek owner özel komutlarda işinizi kolaylaştırır. Örnek bir şema.
+```ts
+export default {
+    OWNERS: ["581884583985807381","1098189730513956945"]
+};
+```
+
+- config.ts dosyasının Tüm Şeması
+```ts
+export default {
+    PREFIX: "!",
+    MESSAGES: {
+        COOLDOWN_MESSAGE: ["5S"]
+    },
+    COLORS: {
+        PURPLE: "#9269ff",
+        RED: "#ff0000"
+    },
+    EMOJIS: {
+        SUCCESS: "✅",
+        ERROR: "❌"
+    },
+    OWNERS: ["581884583985807381","1098189730513956945"]
+};
+```
+
+### Prefix Komutları
+`/src/commands/prefix/ping.ts` klasöründe komut dosyalarınızı oluşturabilirsiniz. Örnek bir komut dosyası `ping.ts`:
 
 ```typescript
-KOMUTU BURAYA EKLE HANTIR
+export default {
+    name: "deneme",
+    run: async function(client, message, args) {
+        await message.reply(`🏓 Pong ${client.ws.ping}ms`)
+    }
+};
+```
+
+### Slash Komutları
+`/src/commands/slash/ping.ts` klasöründe komut dosyalarınızı oluşturabilirsiniz. Örnek bir komut dosyası `ping.ts`:
+
+```typescript
+export default {
+  data: {
+    name: "ping",
+    description: "Botun Ping Gösterir",
+  },
+  run: async function(client,interaction) {
+await interaction.reply(`🏓 Pong ${client.ws.ping}ms`)
+ }
+}
 ```
 
 ### Olaylar
@@ -70,7 +150,36 @@ KOMUTU BURAYA EKLE HANTIR
 `/src/events` klasöründe olay dosyalarınızı oluşturabilirsiniz. Örnek bir olay dosyası `ready.ts`:
 
 ```typescript
-EVENTİ BURAYA EKLE HANTIR
+    import { ActivityType } from "discord.js";
+import { client } from "../index";
+import colors from "colors"
+
+client.on("ready", (client) => {
+  console.log(colors.red(`${client.user.tag} İsimli Bot Şuan Aktif!`));
+
+  const activities = [
+    {
+      name: `Dark_Hunter & AquaDemon`,
+      type: ActivityType.Playing,
+    }
+  ];
+
+  const status = ["dnd"];
+  let i = 0;
+  setInterval(() => {
+    if (i >= activities.length) i = 0;
+    client.user.setActivity(activities[i]);
+    i++;
+  }, 5000);
+
+  let s = 0;
+  setInterval(() => {
+    if (s >= activities.length) s = 0;
+    // @ts-ignore
+    client.user.setStatus(status[s]);
+    s++;
+  }, 30000);
+});
 ```
 
 ## Kullanım
