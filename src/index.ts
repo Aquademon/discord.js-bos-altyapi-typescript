@@ -50,6 +50,8 @@ client.commands = new Collection();
 // @ts-ignore
 client.slashCommands = new Collection();
 // @ts-ignore
+client.slashArray = []
+// @ts-ignore
 client.aliases = new Collection();
 
 // Botu .env dosyasındaki token ile giriş yap
