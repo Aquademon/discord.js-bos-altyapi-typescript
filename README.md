@@ -30,8 +30,9 @@ Bu proje, TypeScript kullanarak Discord.js ile gelişmiş bir Discord botu oluş
 1. Bu projeyi bilgisayarınıza klonlayın:
 
     ```bash
-    git clone https://github.com/kullaniciadi/proje-adi.git
-    cd proje-adi
+    mkdir Proje-Adi
+    cd Proje-Adi
+    git clone https://github.com/Aquademon/discord.js-bos-altyapi-typescript.git .
     ```
 
 2. Gerekli bağımlılıkları yükleyin:
@@ -61,17 +62,7 @@ Bu proje, TypeScript kullanarak Discord.js ile gelişmiş bir Discord botu oluş
 `/src/commands` klasöründe komut dosyalarınızı oluşturabilirsiniz. Örnek bir komut dosyası `ping.ts`:
 
 ```typescript
-import { Command } from "../types";
-
-const ping: Command = {
-    name: "ping",
-    description: "Botun pingini kontrol eder.",
-    execute: async (message, args) => {
-        message.channel.send("Pong!");
-    }
-};
-
-export default ping;
+KOMUTU BURAYA EKLE HANTIR
 ```
 
 ### Olaylar
@@ -79,17 +70,7 @@ export default ping;
 `/src/events` klasöründe olay dosyalarınızı oluşturabilirsiniz. Örnek bir olay dosyası `ready.ts`:
 
 ```typescript
-import { Event } from "../types";
-
-const ready: Event = {
-    name: "ready",
-    once: true,
-    execute: client => {
-        console.log(`Bot ${client.user.tag} olarak giriş yaptı!`);
-    }
-};
-
-export default ready;
+EVENTİ BURAYA EKLE HANTIR
 ```
 
 ## Kullanım
