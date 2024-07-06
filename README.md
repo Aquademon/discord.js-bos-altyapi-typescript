@@ -45,14 +45,14 @@ Bu proje, TypeScript kullanarak Discord.js ile gelişmiş bir Discord botu oluş
 
 3. `.env` dosyasını oluşturun ve gerekli bilgileri doldurun:
     ```env
-    TOKEN="Discord Bot TOKEN"
+    bot_tokeni_buraya
     ```
 
 ## Yapılandırma
 
 ### .env Dosyası
 
-`TOKEN`: Discord Developer Portal'dan aldığınız bot tokenı.
+`DISCORD_TOKEN`: Discord Developer Portal'dan aldığınız bot tokenı.
 
 ### config.ts Dosyası
 
