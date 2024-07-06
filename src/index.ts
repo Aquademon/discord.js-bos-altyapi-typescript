@@ -20,6 +20,7 @@ const client = new Client({
 });
 
 // ==== Çökme Koruyucusu // ==== //
+// Olası hataları ve reddedilen vaatleri yakalamak için olay dinleyicileri ekle
 process.on("unhandledRejection", async (reason, promise) => {
     console.error(
         `${bold(
@@ -27,11 +28,13 @@ process.on("unhandledRejection", async (reason, promise) => {
         )} ${reason} ${promise}`
     );
 });
+
 process.on("uncaughtException", async err => {
     console.log(
         `${bold(yellow("[ÇÖKME-KORUYUCU/uncaughtException]:"))} ${err}`
     );
 });
+
 process.on("uncaughtExceptionMonitor", async (err, origin) => {
     console.log(
         `${bold(
@@ -41,6 +44,7 @@ process.on("uncaughtExceptionMonitor", async (err, origin) => {
 });
 
 // ==== // İstemci Özellikleri // ====//
+// Komutlar, slash komutları ve takma adlar için koleksiyonlar oluştur
 // @ts-ignore
 client.commands = new Collection();
 // @ts-ignore
@@ -53,7 +57,8 @@ client.login(process.env.TOKEN);
 
 export default client;
 
-readdirSync(join(__dirname, "Handlers")).map(handler => {
+// Handlers klasöründeki tüm dosyaları oku ve içe aktararak çalıştır
+readdirSync(join(__dirname, "Handlers")).map(async handler => {
     const func = await import(join(__dirname, "Handlers", handler));
     func.default(client);
 });
