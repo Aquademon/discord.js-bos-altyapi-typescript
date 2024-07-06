@@ -59,7 +59,7 @@ Bu proje, TypeScript kullanarak Discord.js ile gelişmiş bir Discord botu oluş
 
 ### Komutlar
 
-`/src/commands` klasöründe komut dosyalarınızı oluşturabilirsiniz. Örnek bir komut dosyası `ping.ts`:
+`/src/commands/prefix` klasöründe komut dosyalarınızı oluşturabilirsiniz. Örnek bir komut dosyası `ping.ts`:
 
 ```typescript
 KOMUTU BURAYA EKLE HANTIR
