@@ -36,4 +36,4 @@ client.slashCommands = new Collection()
 client.aliases = new Collection()
 
 // Botu .env dosyasındaki token ile giriş yap
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.TOKEN);
