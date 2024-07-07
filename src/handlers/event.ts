@@ -14,7 +14,7 @@ export default client => {
         .filter(file => file.endsWith(".ts"))
         .map(async event => {
             // Her olayı içe aktar
-            await import(join("src", "events", event));
+            await import(join(__dirname, "events", event));
 
             // Başarılı şekilde içe aktarılan olayı tabloya ekle
             table.addRow(event.split(".ts")[0], "🟢");
