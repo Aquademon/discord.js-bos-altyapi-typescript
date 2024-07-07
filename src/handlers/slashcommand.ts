@@ -11,9 +11,11 @@ const table = new AsciiTable()
     .setHeading("Komut (/)", "Durum")
     .setBorder("|", "=", "0", "0");
 
+// Discord REST API'sine erişim için REST örneği oluştur
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
 export default client => {
+    // Slash komut klasörlerindeki tüm dizinleri oku
     const folders = readdirSync(join("src", "commands", "slash"), {
         withFileTypes: true
     })
@@ -21,17 +23,20 @@ export default client => {
         .map(dir => dir.name);
 
     for (const folder of folders) {
-        const commandFiles = join("src", "commands", "slash", folder).filter(
-            file => file.endsWith(".ts")
-        );
+        // Her dizindeki TypeScript dosyalarını filtrele
+        const commandFiles = readdirSync(
+            join("src", "commands", "slash", folder)
+        ).filter(file => file.endsWith(".ts"));
 
         for (const file of commandFiles) {
             const filePath = join("src", "commands", "slash", folder, file);
 
             try {
+                // Komutu içe aktar
                 const cmd = await import(filePath);
                 const command = cmd.default;
 
+                // Komutun geçerli olup olmadığını kontrol et
                 if (
                     !command ||
                     !command.data ||
@@ -44,6 +49,7 @@ export default client => {
                     continue;
                 }
 
+                // Komutu client'a ekle
                 client.slashCommands.set(command.data.name, command);
                 if (command.data instanceof SlashCommandBuilder) {
                     client.slashArray.push(command.data.toJson());
@@ -51,8 +57,10 @@ export default client => {
                     client.slashArray.push(command.data);
                 }
 
+                // Başarılı komutu tabloya ekle
                 table.addRow(command.data.name, "🟢");
             } catch (error) {
+                // Başarısız komutu tabloya ekle
                 console.error(
                     `Failed to load slash command at ${filePath}:`,
                     error
@@ -61,9 +69,11 @@ export default client => {
             }
         }
 
+        // Tabloyu kırmızı renkle yazdır
         console.log(bold(red(table.toString())));
 
         try {
+            // Slash komutlarını Discord API'sine kaydet
             await rest.put(Routes.applicationCommands(process.env.DISCORD_ID), {
                 body: client.slashArray
             });
