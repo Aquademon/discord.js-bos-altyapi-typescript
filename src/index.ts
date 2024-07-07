@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { Client, GatewayIntentBits, Partials, Collection } from "discord.js";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { bold, yellow } from "colors";
@@ -60,7 +60,7 @@ client.login(process.env.TOKEN);
 export default client;
 
 // Handlers klasöründeki tüm dosyaları oku ve içe aktararak çalıştır
-readdirSync(join(__dirname, "Handlers")).map(async handler => {
-    const func = await import(join(__dirname, "Handlers", handler));
+readdirSync(join(__dirname, "handlers")).map(async handler => {
+    const func = await import(join(__dirname, "handlers", handler));
     func.default(client);
 });
