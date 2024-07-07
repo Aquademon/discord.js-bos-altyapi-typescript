@@ -22,7 +22,7 @@ export default client => {
         // Her komut dosyasını oku ve içe aktar
         files.map(async file => {
             let command = await import(
-                join("src", "commands", "prefix", dir, file)
+                join(__dirname, "commands", "prefix", dir, file)
             );
 
             if (command) {
