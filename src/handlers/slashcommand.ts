@@ -14,7 +14,7 @@ const table = new AsciiTable()
 // Discord REST API'sine erişim için REST örneği oluştur
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
-export default client => {
+export default async client => {
     // Slash komut klasörlerindeki tüm dizinleri oku
     const folders = readdirSync(join("src", "commands", "slash"), {
         withFileTypes: true
