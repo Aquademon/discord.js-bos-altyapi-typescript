@@ -12,7 +12,7 @@ export default client => {
     // Komutlar klasöründeki alt klasörleri oku
     readdirSync(join("src", "commands", "prefix")).map(dir => {
         // Belirli klasördeki TypeScript dosyalarını filtrele
-        const files = readdirSync(join("src", "commands", dir)).filter(file =>
+        const files = readdirSync(join("src", "commands", "prefix", dir)).filter(file =>
             file.endsWith(".ts")
         );
 
