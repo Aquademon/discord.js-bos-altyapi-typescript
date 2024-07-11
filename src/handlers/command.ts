@@ -1,50 +1,57 @@
+import fs from "fs";
+import path from "path";
+import colors from "colors";
 import AsciiTable from "ascii-table";
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
-import { blue, red, bold } from "colors";
 
-// Komutları ve durumlarını göstermek için ASCII tablosu oluştur
-const table = new AsciiTable()
-    .setHeading("Komut", "Durum")
-    .setBorder("|", "=", "0", "0");
+const table = new AsciiTable();
+table.setHeading("Commands", "Status").setBorder("|", "=", "0", "0");
+
+interface Command {
+    name: string;
+    aliases?: string[];
+}
 
 export default client => {
-    // Komutlar klasöründeki alt klasörleri oku
-    readdirSync(join("src", "commands", "prefix")).map(dir => {
-        // Belirli klasördeki TypeScript dosyalarını filtrele
-        const files = readdirSync(join("src", "commands", "prefix", dir)).filter(file =>
-            file.endsWith(".ts")
-        );
+    const commandDir = path.join(process.cwd(), "src", "Commands", "Prefix");
 
-        // Eğer dosya yoksa, kırmızı renkle 0 komut yazdır
-        if (!files || files.length <= 0) console.log(bold(red("Commands - 0")));
+    const directories = fs.readdirSync(commandDir);
 
-        // Her komut dosyasını oku ve içe aktar
-        files.map(async file => {
-            let command = await import(
-                join(__dirname, "commands", "prefix", dir, file)
-            );
+    for (const dir of directories) {
+        const files = fs
+            .readdirSync(path.join(commandDir, dir))
+            .filter((file) => file.endsWith(".ts"));
+
+        if (files.length === 0) continue;
+
+        for (const file of files) {
+            const commandPath = path.join(commandDir, dir, file);
+            let command: Command;
+
+            try {
+                command = (await import(commandPath)).default;
+            } catch (error) {
+                console.error(colors.red(`Failed to load command file: ${commandPath}`), error);
+                table.addRow(file.split(".ts"), "❌");
+                continue;
+            }
+
 
             if (command) {
-                // Komutu client'a ekle
                 client.commands.set(command.name, command);
 
-                // Eğer komutun takma adları varsa, bunları da ekle
                 if (command.aliases && Array.isArray(command.aliases)) {
-                    command.aliases.map(alias => {
+                    command.aliases.forEach((alias) => {
                         client.aliases.set(alias, command.name);
                     });
                 }
 
-                // Başarılı komutu tabloya ekle
-                table.addRow(command.name, "🟢");
+                table.addRow(command.name, "✅");
             } else {
-                // Başarısız komutu tabloya ekle
-                table.addRow(file, "🔴");
+                console.error(colors.red(`Invalid command structure or run function not defined: ${commandPath}`));
+                table.addRow(file.split(".ts"), "❌");
             }
-        });
-    });
+        }
+    };
 
-    // Tabloyu mavi renkle yazdır
-    console.log(bold(blue(table.toString())));
+    console.log(colors.blue(table.toString()));
 };
