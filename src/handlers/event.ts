@@ -7,7 +7,7 @@ const table = new AsciiTable();
 table.setHeading("Events", "Stats").setBorder("|", "=", "0", "0");
 
 export default async (client) => {
-  const eventsPath = path.resolve(process.cwd(), "src/Events");
+  const eventsPath = path.resolve(process.cwd(), "src/events");
   
   const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".ts"));
 
