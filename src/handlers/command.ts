@@ -12,7 +12,7 @@ interface Command {
 }
 
 export default client => {
-    const commandDir = path.join(process.cwd(), "src", "Commands", "Prefix");
+    const commandDir = path.join(process.cwd(), "src", "commands", "prefix");
 
     const directories = fs.readdirSync(commandDir);
 
