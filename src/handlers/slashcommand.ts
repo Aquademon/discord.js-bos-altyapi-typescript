@@ -60,7 +60,7 @@ const slashCommandsPath = path.resolve(process.cwd(), "src/commands/slash");
 
     try {
         await rest.put(
-            Routes.applicationCommands(process.env.CLIENT_ID),
+            Routes.applicationCommands(process.env.DISCORD_ID),
             { body: client.slashArray }
         );
         console.log(colors.yellow("Slash Commands • Registered"));
