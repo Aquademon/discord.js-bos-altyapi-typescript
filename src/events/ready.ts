@@ -7,7 +7,7 @@ client.on("ready", client => {
 
     const activities = [
         {
-            name: `Dark_Hunter & AquaDemon`,
+            name: `by AquaDemon Development`,
             type: ActivityType.Playing
         }
     ];
